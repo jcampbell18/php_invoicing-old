@@ -11,6 +11,8 @@
   - clients
   - project sites
 
+![DrawIO](https://github.com/jcampbell18/php_invoicing-old/blob/main/invoicing_system.png)
+
 Tools:  
 - [x] PHP 5.x
 - [x] MYSQL
