@@ -23,7 +23,7 @@
   - Client requests a bid for a property (aka Project Site)
     - Contractor navigates to Project Sites
       - adds a Project Site
-        - creates a folder in projectsites with address as name
+        - automatically creates a folder in projectsites with address as name
           - `/projectsites/123 N Example Rd`
     - Contractor navigates to Bids
       - adds a Bid, referencing the Project Site and Client
@@ -33,7 +33,7 @@
       - clicks the approve button on the Bid
         - Invoice created, referencing all information from Bid including Bid #
           - Invoice Id# 0001
-        - Folders and subfolders are created under projectsites directory and address of project site, with labels Images and Receipts and Invoice reference
+        - Folders and subfolders are automatically created under projectsites directory and address of project site, with labels Images and Receipts and Invoice reference
           - `/projectsites/123 N Example Rd/Images/INV_0001`
           - `/projectsites/123 N Example Rd/Receipts/INV_0001`
 
