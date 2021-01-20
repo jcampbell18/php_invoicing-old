@@ -3,25 +3,25 @@
 // update query
 	if ($_POST['submit'] == "update") {
         $sql = "UPDATE $tablename SET name='{$_POST['name']}' WHERE id='{$_GET['id']}'";
-        mysqli_query($connection, $sql);
+        mysqli_query($connection ,$sql);
 	    header("Location: $tablename.php");
 	}  
 // insert query
     if ($_POST['submit'] == "add") {
 		$sql = "INSERT INTO $tablename SET name='{$_POST['name']}'";
-		mysqli_query($connection, $sql);
+		mysqli_query($connection ,$sql);
 		header("Location: $tablename.php");
 	}
 // remove query
     if ($_GET['action'] == "delete") {
 		$sql = "DELETE FROM $tablename WHERE id='{$_GET['id']}'";
-		mysqli_query($connection, $sql);
+		mysqli_query($connection ,$sql);
 		header("Location: $tablename.php");
 	}
 // create a new query
     if ($_GET['action'] != "add") {
         $sql = "SELECT * FROM $tablename WHERE id='{$_GET['id']}'";
-		$sql = mysqli_query($connection, $sql);
+		$sql = mysqli_query($connection ,$sql);
 		extract(mysqli_fetch_assoc($sql));
 	}
 ?>
@@ -39,9 +39,9 @@
                                                         <td style="background: inherit; color: inherit; width: 940px; vertical-align: top; font-size: 11px; font-family: Tahoma, Arial, sans-serif; text-align: left; padding: 0px 0px 0px 0px;">
 <?
     $sql = "SELECT * FROM terms ORDER BY ID";
-    $sql = mysqli_query($connection, $sql);
+    $sql = mysqli_query($connection ,$sql);
 /* Counting Number of Rows, adding divider between each row until the end */ 
-    $num_rows = mysqli_num_rows($sql);      
+    $num_rows = mysqli_num_rows($sql);
     for ($i = 1; $i <= $num_rows; $i++) {
         while($list = mysqli_fetch_assoc($sql)) {
             extract($list);

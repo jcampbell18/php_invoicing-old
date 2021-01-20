@@ -1,15 +1,17 @@
 <?
- define("DBName","docjas");
- define("HostName","localhost");
- define("UserName","root");
- define("Password","");
+  define("DBName","jcrewsite");
+  define("HostName","localhost");
+//  define("HostName","mysql-db.jasonlcampbell.com");
+  define("UserName","jcrewsite");
+  define("Password","&viK1fo4L8t#sGeksNO9dC");
 
-  $connection = mysqli_connect(HostName, UserName, Password, DBName);
-  
+  $connection = mysqli_connect(HostName,UserName,Password, DBName);
+
   if (!$connection) {
       echo("Can not connect database ".DBName."!<BR>");
-      echo(mysqli_connect_error());
+      echo(mysqli_error());
       exit;
   }
 
+//  mysqli_select_db(DBName,$connection);
 ?>

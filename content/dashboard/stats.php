@@ -9,21 +9,21 @@
         }
 /* Unpaid/Completed Invoices */
     $sqlU = "SELECT SUM(amount) FROM invoice WHERE complete='1' AND paid='0' and date_start>'{$report_year}'";
-    $sqlU = mysqli_query($connection, $sqlU);
+    $sqlU = mysqli_query($connection,$sqlU);
     list($unpaid_c) = mysqli_fetch_row($sqlU);
         if ($unpaid_c < 1) {
             $unpaid_c = '0.00';
         }
 /* Unpaid/Uncompleted Invoices */
     $sqlV = "SELECT SUM(amount) FROM invoice WHERE complete='0' AND paid='0' and date_start>'{$report_year}'";
-    $sqlV = mysqli_query($connection, $sqlV);
+    $sqlV = mysqli_query($connection,$sqlV);
     list($unpaid_u) = mysqli_fetch_row($sqlV);
         if ($unpaid_u < 1) {
             $unpaid_u = '0.00';
         }
 /* Total */
     $sqlT = "SELECT SUM(amount) FROM invoice WHERE date_start>'{$report_year}'";
-    $sqlT = mysqli_query($connection, $sqlT);
+    $sqlT = mysqli_query($connection,$sqlT);
     list($total) = mysqli_fetch_row($sqlT);
         if ($total < 1) {
             $total = '0.00';

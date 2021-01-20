@@ -13,7 +13,7 @@
     $i=0;
 
     $sql = "SELECT * FROM invoice WHERE paid='0' ORDER BY date_start DESC";
-    $sql = mysqli_query($connection, $sql);
+    $sql = mysqli_query($connection ,$sql);
     
     $num_rows = mysqli_num_rows($sql);
     
@@ -32,7 +32,7 @@
         }        
 /* Converting Project Sites id and SKU id to actual name */
         $sqlB = "SELECT p.address,p.city,p.state,p.zipcode,s.name FROM projectsites AS p, sku AS s WHERE p.id='$project_id' AND s.id='$sku_id'";
-        $sqlB = mysqli_query($connection, $sqlB);
+        $sqlB = mysqli_query($connection ,$sqlB);
         list($address,$city,$state,$zipcode,$sku_name) = mysqli_fetch_row($sqlB);
 
 /* Changing the date to regular format */

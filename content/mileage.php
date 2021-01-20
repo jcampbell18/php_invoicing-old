@@ -11,16 +11,16 @@
                                                         <td style="background: inherit; color: inherit; width: 940px; vertical-align: top; font-size: 11px; font-family: Tahoma, Arial, sans-serif; text-align: left; padding: 0px 0px 0px 0px;">
 <?
     $sql = "SELECT * FROM mileage ORDER BY ID";
-    $sql = mysqli_query($connection, $sql);
+    $sql = mysqli_query($connection ,$sql);
 /* Counting Number of Rows, adding divider between each row until the end */ 
-    $num_rows = mysqli_num_rows($sql);      
+    $num_rows = mysqli_num_rows($sql);
     $i = 0;
         while($list = mysqli_fetch_assoc($sql)) {
             extract($list);
             $i++;
 /* Converting Project Sites id to actual name */
             $sqlB = "SELECT address,city,state,zipcode FROM projectsites WHERE id='$project_id'";
-            $sqlB = mysqli_query($connection, $sqlB);
+            $sqlB = mysqli_query($connection ,$sqlB);
             list($address,$city,$state,$zipcode) = mysqli_fetch_row($sqlB);
 /* Changing the date to regular format */
             $mdy = explode("-",$drive_date);

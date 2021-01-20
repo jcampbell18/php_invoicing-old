@@ -8,7 +8,7 @@
                                                     <ul>
 <?
     $sql_a = "SELECT l.desc FROM changelog l, changelog_category c WHERE l.changelog_id=c.id AND c.id=2 ORDER BY l.id AND l.complete DESC";
-	$sql_a = mysqli_query($connection, $sql_a);
+	$sql_a = mysqli_query($connection ,$sql_a);
 	while(list($desc_a) = mysqli_fetch_row($sql_a)) {
 ?>
                                                         <li style="padding-bottom: 10px;"><?= $desc_a ?></li>								                                        
@@ -21,7 +21,7 @@
                                                     <ul>
 <?
     $sql_b = "SELECT l.desc FROM changelog l, changelog_category c WHERE l.changelog_id=c.id AND c.id=3 ORDER BY l.id AND l.complete DESC";
-	$sql_b = mysqli_query($connection, $sql_b);
+	$sql_b = mysqli_query($connection ,$sql_b);
 	while(list($desc_b) = mysqli_fetch_row($sql_b)) {
 ?>
                                                         <li style="padding-bottom: 10px;"><?= $desc_b ?></li>								                                        
@@ -37,7 +37,7 @@
                                                     <ul>
 <?
     $sql_c = "SELECT l.changelog_date, l.desc FROM changelog l, changelog_category c WHERE l.changelog_id=c.id AND c.id=1 ORDER BY l.id";
-	$sql_c = mysqli_query($connection, $sql_c);
+	$sql_c = mysqli_query($connection ,$sql_c);
 	while(list($date_c,$desc_c) = mysqli_fetch_row($sql_c)) {
         $date = explode("-", $date_c);
         $date_c = $date[1].'-'.$date[2].'-'.$date[0];
@@ -53,7 +53,7 @@
                                                         <select name="sku_id" style="border: 1px solid #7e7878; background: inherit; color: inherit; font-size: 11px; font-family: Tahoma, Arial, sans-serif;">
 <?
 	$sql_d = "SELECT id,name FROM changelog_category";
-	$sql_d = mysqli_query($connection, $sql_d);
+	$sql_d = mysqli_query($connection ,$sql_d);
 	while(list($cl_id,$cl_name) = mysqli_fetch_row($sql_d)) {
 ?>
                                                             <option value="<?= $cl_id ?>"><?= $cl_name ?></option>
@@ -63,7 +63,7 @@
                                                         </select>
                                                     </div>
                                                     <div style="padding-top: 10px; padding-left: 30px;">
-                                                        <input type="text" name="desc" value="<?/*= $desc */?>" style="width: 300px; height: 14px; background: inherit; color: #000000; font-size: 11px; font-family: Tahoma, Arial, sans-serif; border: 1px solid #7e7878;">
+                                                        <input type="text" name="desc" value="<?= $desc ?>" style="width: 300px; height: 14px; background: inherit; color: #000000; font-size: 11px; font-family: Tahoma, Arial, sans-serif; border: 1px solid #7e7878;">
                                                         &nbsp;
                                                         <input type="hidden" name="changelog_date" value="<?= date(Y-m-d)?>">
                                                         <input type="submit" style="width: 70px; background: #F7e7878; color: #000000; border: 1px solid #7e7878;" name="submit" value="submit">

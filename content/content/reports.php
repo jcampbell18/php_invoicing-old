@@ -1,8 +1,8 @@
 <?
-    if(!$_GET['archive_year']) {
+    if(isset($_GET['archive_year']) && !$_GET['archive_year']) {
         $date_year = date("Y");            
     } else {
-        $date_year = $_GET['archive_year'];
+        $date_year = isset($_GET['archive_year']) ? $_GET['archive_year'] : NULL;
     }
     
     $date_month = date("n");
@@ -43,7 +43,7 @@
         $monthS = $date_year."-".$i."-01";
         $monthS_ = $date_year."-".$i."-31";
         $sqlA = "SELECT SUM(amount) FROM invoice WHERE paid_date BETWEEN '{$monthS}' AND '{$monthS_}'";
-        $sqlA = mysqli_query($connection, $sqlA);
+        $sqlA = mysqli_query($connection ,$sqlA);
         list($month_income) = mysqli_fetch_row($sqlA);
             if ($month_income == "0") { 
                 $month_income = "N/A"; 
@@ -51,13 +51,13 @@
                 $month_income = "$".number_format($month_income, 2, '.', ',');
             }
         $sqlB = "SELECT SUM(subttl) FROM mileage WHERE drive_date BETWEEN '{$monthS}' AND '{$monthS_}'";
-        $sqlB = mysqli_query($connection, $sqlB);
+        $sqlB = mysqli_query($connection ,$sqlB);
         list($month_miles) = mysqli_fetch_row($sqlB);
             if ($month_miles == "") { 
                 $month_miles = 0; 
             }
         $sqlC = "SELECT SUM(save_tax) FROM invoice WHERE paid_date BETWEEN '{$monthS}' AND '{$monthS_}'";
-        $sqlC = mysqli_query($connection, $sqlC);
+        $sqlC = mysqli_query($connection ,$sqlC);
         list($for_taxes) = mysqli_fetch_row($sqlC);
             if ($for_taxes == "") { 
                 $for_taxes = '$0.00'; 
@@ -89,13 +89,13 @@
 <?
     }
     $sqlA = "SELECT SUM(amount) FROM invoice WHERE paid_date BETWEEN '$year_start' AND '$year_end'";
-    $sqlA = mysqli_query($connection, $sqlA);
+    $sqlA = mysqli_query($connection ,$sqlA);
     list($year_income) = mysqli_fetch_row($sqlA);
     $sqlB = "SELECT SUM(subttl) FROM mileage WHERE drive_date BETWEEN '$year_start' AND '$year_end'";
-    $sqlB = mysqli_query($connection, $sqlB);
+    $sqlB = mysqli_query($connection ,$sqlB);
     list($year_miles) = mysqli_fetch_row($sqlB);
     $sqlC = "SELECT SUM(save_tax) FROM invoice WHERE paid_date BETWEEN '$year_start' AND '$year_end'";
-    $sqlC = mysqli_query($connection, $sqlC);
+    $sqlC = mysqli_query($connection ,$sqlC);
     list($year_taxes) = mysqli_fetch_row($sqlC);
 ?>
                                                         <tr>
@@ -136,7 +136,7 @@
                                                         </tr>
 <?
     $sqlG = "SELECT * FROM invoice WHERE loan_paid=0 AND loan_amount>'0.00' AND interest_paid=0 AND interest_amount>'0.00'";
-    $sqlG = mysqli_query($connection, $sqlG);
+    $sqlG = mysqli_query($connection ,$sqlG);
     while($list = mysqli_fetch_assoc($sqlG)) {
         extract($list);
 /* Converting Invoice ID to Invoice # */
@@ -168,7 +168,7 @@
 <?
     }
     $sqlH = "SELECT SUM(loan_amount),SUM(interest_amount) FROM invoice WHERE loan_paid=0 AND loan_amount>'0.00' AND interest_paid=0 AND interest_amount>'0.00'";
-    $sqlH = mysqli_query($connection, $sqlH);
+    $sqlH = mysqli_query($connection ,$sqlH);
     list($total_loan,$total_interest) = mysqli_fetch_row($sqlH);
 ?>
                                                         <tr>
@@ -204,7 +204,7 @@
                                                         </tr>
 <?
     $sqlG = "SELECT * FROM invoice WHERE loan_paid=1 AND loan_amount>'0.00' AND complete_date BETWEEN '$year_start' AND '$year_end'";
-    $sqlG = mysqli_query($connection, $sqlG);
+    $sqlG = mysqli_query($connection ,$sqlG);
     while($list = mysqli_fetch_assoc($sqlG)) {
         extract($list);
 /* Converting Invoice ID to Invoice # */
@@ -236,7 +236,7 @@
 <?
     }
     $sqlH = "SELECT SUM(loan_amount),SUM(interest_amount) FROM invoice WHERE loan_paid=1 AND loan_amount>'0.00' AND complete_date BETWEEN '$year_start' AND '$year_end'";
-    $sqlH = mysqli_query($connection, $sqlH);
+    $sqlH = mysqli_query($connection ,$sqlH);
     list($total_loan,$total_interest) = mysqli_fetch_row($sqlH);
 ?>
                                                         <tr>
@@ -275,10 +275,10 @@
                                                         </tr>
 <?
     $sql = "SELECT id,name,shortdesc FROM expense_category ORDER BY name";
-    $sql = mysqli_query($connection, $sql);  
+    $sql = mysqli_query($connection ,$sql);
     while(list($cid,$cname,$cshortdesc) = mysqli_fetch_row($sql)) {
         $sqlE = "SELECT SUM(total) FROM expense WHERE expense_category_id=$cid AND pdate BETWEEN '$year_start' AND '$year_end'";
-        $sqlE = mysqli_query($connection, $sqlE);
+        $sqlE = mysqli_query($connection ,$sqlE);
         list($expense_amount) = mysqli_fetch_row($sqlE);
 ?>
 
@@ -294,8 +294,8 @@
 <?
     }
     $sqlF = "SELECT SUM(total) FROM expense WHERE pdate BETWEEN '$year_start' AND '$year_end'";
-    $sqlF = mysqli_query($connection, $sqlF);
-    list($expense_total) = mysqli_fetch_row($sqlF); 
+    $sqlF = mysqli_query($connection ,$sqlF);
+    list($expense_total) = mysqli_fetch_row($sqlF);
 ?>
                                                         <tr>
                                                             <td style="background: url('imgs/main_column.jpg') no-repeat; font-weight: bold; color: inherit; width: 235px; height: 36px; vertical-align: middle; font-size: 11px; font-family: Tahoma, Arial, sans-serif; text-align: right; padding: 0px 0px 0px 0px;">
@@ -320,7 +320,7 @@
                                                         </tr>
 <?
     $sqlL = "SELECT * FROM vehicles ORDER BY id";
-    $sqlL = mysqli_query($connection, $sqlL);
+    $sqlL = mysqli_query($connection ,$sqlL);
     while(list($vid,$man_year,$make,$model) = mysqli_fetch_row($sqlL)) {
 ?>
                                                         <tr>
@@ -333,17 +333,17 @@
                                                         </tr>
 <?
         $sqlS = "SELECT start_miles FROM mileage WHERE vehicle_id='$vid' AND drive_date BETWEEN '$year_start' AND '$year_end' LIMIT 1";
-        $sqlS = mysqli_query($connection, $sqlS);
+        $sqlS = mysqli_query($connection ,$sqlS);
         list($odometerA) = mysqli_fetch_row($sqlS);
         
         $sqlT = "SELECT end_miles FROM mileage WHERE vehicle_id='$vid' AND drive_date BETWEEN '$year_start' AND '$year_end' ORDER BY id DESC LIMIT 1";
-        $sqlT = mysqli_query($connection, $sqlT);
-        list($odometerB) = mysqli_fetch_row($sqlT);       
+        $sqlT = mysqli_query($connection ,$sqlT);
+        list($odometerB) = mysqli_fetch_row($sqlT);
         
         $pb_mileage = $odometerB - $odometerA;
         
         $sqlP = "SELECT sum(subttl) FROM mileage WHERE vehicle_id='$vid' AND drive_date BETWEEN '$year_start' AND '$year_end'";
-        $sqlP = mysqli_query($connection, $sqlP);
+        $sqlP = mysqli_query($connection ,$sqlP);
         list($business_mileage) = mysqli_fetch_row($sqlP);
 ?>
 
@@ -391,7 +391,7 @@
         $year_startA = $date_year."-01-01";
         $year_endA = $date_year."-06-30";
         $sqlQ = "SELECT sum(subttl) FROM mileage WHERE vehicle_id='$vid' AND drive_date BETWEEN '$year_startA' AND '$year_endA'";
-        $sqlQ = mysqli_query($connection, $sqlQ);
+        $sqlQ = mysqli_query($connection ,$sqlQ);
         list($mileageA) = mysqli_fetch_row($sqlQ);
 ?>
                                                         <tr>
@@ -408,7 +408,7 @@
         $year_startB = $date_year."-07-01";
         $year_endB = $date_year."-12-31";
         $sqlR = "SELECT sum(subttl) FROM mileage WHERE vehicle_id='$vid' AND drive_date BETWEEN '$year_startB' AND '$year_endB'";
-        $sqlR = mysqli_query($connection, $sqlR);
+        $sqlR = mysqli_query($connection ,$sqlR);
         list($mileageB) = mysqli_fetch_row($sqlR);
 ?>
                                                         <tr>
@@ -424,10 +424,10 @@
 <?
 //        }
         $sqlM = "SELECT id,name FROM expense_category WHERE id IN (2,3,4,5,24,26,27,28,29) ORDER BY id";
-        $sqlM = mysqli_query($connection, $sqlM);
+        $sqlM = mysqli_query($connection ,$sqlM);
         while(list($expense_id,$expense_name) = mysqli_fetch_row($sqlM)) {
             $sqlN = "SELECT sum(TOTAL) FROM expense WHERE vehicles_id=$vid AND expense_category_id='$expense_id' AND pdate BETWEEN '$year_start' AND '$year_end'";
-            $sqlN = mysqli_query($connection, $sqlN);
+            $sqlN = mysqli_query($connection ,$sqlN);
             list($expense_sum) = mysqli_fetch_row($sqlN);
 ?>
                                                         <tr>

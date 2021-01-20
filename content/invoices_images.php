@@ -1,6 +1,6 @@
 <?
     $sql = "SELECT address FROM projectsites WHERE id='{$_GET['pid']}'";
-    $sql = mysqli_query($connection, $sql);
+    $sql = mysqli_query($connection ,$sql);
     list($address) = mysqli_fetch_row($sql);
 ?>
 
@@ -77,7 +77,7 @@
 
                                                     <tr>
                                                         <td colspan="8" style="background: inherit; color: inherit; width: 940px; height: 52px; vertical-align: middle; font-size: 11px; font-family: Tahoma, Arial, sans-serif; text-align: left; padding: 10px 0px 0px 0px; margin: 0px;">
-                                                            <input type="image" src="imgs/button_back_S.jpg" style="width: 160px; height: 42px; margin: 0px auto; padding: 0px; border: 0px; text-decoration: none;" value="go back" onclick="window.location='main.php?page=invoices_&amp;id=<?= $_GET[id] ?>&amp;action=update';">
+                                                            <input type="image" src="imgs/button_back_S.jpg" style="width: 160px; height: 42px; margin: 0px auto; padding: 0px; border: 0px; text-decoration: none;" value="go back" onclick="window.location='main.php?page=invoices_&amp;id=<?= isset($_GET['id']) ? $_GET['id'] : NULL ?>&amp;action=update';">
                                                         </td>
                                                     </tr>
                                                 </table>

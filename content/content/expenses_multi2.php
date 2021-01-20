@@ -22,7 +22,7 @@
         $name = preg_replace($quotes,$replacements,$_POST['name']);
 
         $sql = "INSERT INTO expense SET invoice_id='{$_POST['invoice_id']}',vendor_id='{$_POST['vendor_id']}',expense_category_id='{$_POST['expense_category_id']}',vehicles_id='{$_POST['vehicles_id']}', pdate='$pdate', name='$name', qty='{$_POST['qty']}', amount='{$_POST['amount']}', ytax='$ytax', subtotal='$subtotal', tax='$tax', total='$total', receipt_reference='{$_POST['receipt_reference']}', image='{$_POST['image']}'";
-		mysqli_query($connection, $sql);
+		mysqli_query($connection ,$sql);
 
         $status = 'Record created successfully';
         
@@ -48,7 +48,7 @@
         $name = preg_replace($quotes,$replacements,$_POST['name']);
 
         $sql = "UPDATE expense SET invoice_id='{$_POST['invoice_id']}',vendor_id='{$_POST['vendor_id']}',expense_category_id='{$_POST['expense_category_id']}',vehicles_id='{$_POST['vehicles_id']}', pdate='$pdate', name='$name', qty='{$_POST['qty']}', amount='{$_POST['amount']}', subtotal='$subtotal', ytax='$ytax', tax='$tax', total='$total', receipt_reference='{$_POST['receipt_reference']}', image='{$_POST['image']}' WHERE id='{$_GET['id']}'";        
-        mysqli_query($connection, $sql);
+        mysqli_query($connection ,$sql);
         
         $status = 'Record updated successfully';
 	}
@@ -56,7 +56,7 @@
 // update invoice
     if ($_GET['action'] != 'create') {                     
         $sql = "SELECT * FROM expense WHERE id='{$_GET['id']}'";
-    	$sql = mysqli_query($connection, $sql);
+    	$sql = mysqli_query($connection ,$sql);
     	extract(mysqli_fetch_assoc($sql));
 /* Converting Date */
         $pdate = explode("-", $pdate);
@@ -101,7 +101,7 @@
     								                                    <option value="0">N/A</option>
 <?
 	$sql_a = "SELECT i.id, p.address, p.city, p.state, p.zipcode, s.name FROM invoice i, projectsites p, sku s WHERE i.project_id=p.id AND s.id=i.sku_id ORDER BY i.id,p.address";
-	$sql_a = mysqli_query($connection, $sql_a);
+	$sql_a = mysqli_query($connection ,$sql_a);
 	while(list($inv_id, $inv_address, $inv_city, $inv_state, $inv_zipcode, $inv_sku) = mysqli_fetch_row($sql_a)) {
         $inv_projectsite = $inv_address.', '.$inv_city.', '.$inv_state.' '.$inv_zipcode;	   
 /* Converting Invoice ID to Invoice # */
@@ -133,7 +133,7 @@
     								                                    <option value="0">N/A</option>
 <?
 	$sql_z = "SELECT id,man_year,make,model,submodel FROM vehicles ORDER BY id";
-	$sql_z = mysqli_query($connection, $sql_z);
+	$sql_z = mysqli_query($connection ,$sql_z);
 	while(list($v_id,$man_year,$make,$model,$submodel) = mysqli_fetch_row($sql_z)) {
         $vehicle = $man_year.' - '.$make.' '.$model.' '.$submodel;	   
 ?>
@@ -155,7 +155,7 @@
     								                                    <option value="">&nbsp;</option>
 <?
 	$sql_b = "SELECT id,shortname FROM vendor";
-	$sql_b = mysqli_query($connection, $sql_b);
+	$sql_b = mysqli_query($connection ,$sql_b);
 	while(list($vid,$vname) = mysqli_fetch_row($sql_b)) {
 ?>
 								                                        <option value="<?= $vid ?>" <? if($vendor_id == $vid) echo("selected"); ?>><?= $vname ?></option>
@@ -176,7 +176,7 @@
     								                                    <option value="">&nbsp;</option>
 <?
 	$sql_c = "SELECT id,name,shortdesc FROM expense_category";
-	$sql_c = mysqli_query($connection, $sql_c);
+	$sql_c = mysqli_query($connection ,$sql_c);
 	while(list($eid,$ename,$eshortdesc) = mysqli_fetch_row($sql_c)) {
 ?>
 								                                        <option value="<?= $eid ?>" <? if($expense_category_id == $eid) echo("selected"); ?>><?= $ename." (".$eshortdesc.")" ?></option>
@@ -284,7 +284,7 @@
     								                                    <option value="0">N/A</option>
 <?
     $sqlZ = "SELECT i.id, p.address FROM projectsites AS p, invoice AS i WHERE i.project_id=p.id ORDER BY i.id";
-    $sqlZ = mysqli_query($connection, $sqlZ);
+    $sqlZ = mysqli_query($connection ,$sqlZ);
 	while(list($inv_num,$address) = mysqli_fetch_row($sqlZ)) {
         if ($inv_num >= 10) {
               if ($inv_num <= 99) {

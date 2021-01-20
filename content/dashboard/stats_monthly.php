@@ -20,7 +20,7 @@
         $monthS = $date_year."-".$i."-01";
         $monthS_ = $date_year."-".$i."-31";
         $sqlMa = "SELECT SUM(amount) FROM invoice WHERE date_start BETWEEN '{$monthS}' AND '{$monthS_}'";
-        $sqlMa = mysqli_query($connection,$sqlMa);
+        $sqlMa = mysqli_query($connection ,$sqlMa);
         list($month_amount) = mysqli_fetch_row($sqlMa);
 ?>
                                                                     <tr>
@@ -28,7 +28,14 @@
                                                                             <?= $month ?>
                                                                         </td>
                                                                         <td style="width: 155px; height: 40px; background: inherit; color: #7e7878; font-size: 11px; font-family: Tahoma, Arial, sans-serif; text-align: left; padding: 3px 0px 0px 0px;">
-                                                                            <?= "$".number_format($month_amount, 2, '.', ',') ?>
+<?
+            if ($date_month < $i) {
+                echo("N/A");
+            } else {
+                echo("$".number_format($month_amount, 2, '.', ','));
+            }
+?>
+<!--                                                                            --><?//= "$".number_format($month_amount, 2, '.', ',') ?>
                                                                         </td>
                                                                     </tr>
 <?
@@ -47,7 +54,7 @@
         $monthS = $date_year."-".$i."-01";
         $monthS_ = $date_year."-".$i."-31";
         $sqlMa = "SELECT SUM(amount) FROM invoice WHERE date_start BETWEEN '{$monthS}' AND '{$monthS_}'";
-        $sqlMa = mysqli_query($connection, $sqlMa);
+        $sqlMa = mysqli_query($connection ,$sqlMa);
         list($month_amount) = mysqli_fetch_row($sqlMa);
 ?>
                                                                     <tr>

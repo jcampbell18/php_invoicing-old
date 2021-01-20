@@ -1,11 +1,11 @@
 <?
     $sql = "SELECT * FROM login WHERE username='{$_SESSION['username']}'";
-    $sql = mysqli_query($connection, $sql);
+    $sql = mysqli_query($connection ,$sql);
     extract(mysqli_fetch_assoc($sql));
 
 /* Get Access name from ID */
         $sqlB = "SELECT name,shortdesc FROM access WHERE id='$access_id'";
-        $sqlB = mysqli_query($connection, $sqlB);
+        $sqlB = mysqli_query($connection ,$sqlB);
         list($a_name,$a_shortdesc) = mysqli_fetch_row($sqlB);
 ?>
 
@@ -126,7 +126,7 @@
                                                             </td>
                                                             <td style="background: url('imgs/input_column.jpg') no-repeat; width: 594px; height: 36px; vertical-align: middle; color: #000000; padding: 0px 0px 0px 0px; font-size: 11px; font-family: Tahoma, Arial, sans-serif; text-align: left;">
                                                                 <div style="padding-left: 15px;">
-                                                                    <input type="text" name="password" value="<?= $password ?>" style="width: 450px; height: 14px; background: inherit; color: #000000; font-size: 11px; font-family: Tahoma, Arial, sans-serif; border: 0px;">
+                                                                    <input type="password" name="password" value="<?= $password ?>" style="width: 450px; height: 14px; background: inherit; color: #000000; font-size: 11px; font-family: Tahoma, Arial, sans-serif; border: 0px;">
                                                                 </div>
                                                             </td>
                                                         </tr>

@@ -13,7 +13,7 @@
     $i=0;
 
     $sql = "SELECT * FROM invoice ORDER BY date_start DESC LIMIT 5";
-    $sql = mysqli_query($connection, $sql);
+    $sql = mysqli_query($connection ,$sql);
     while($list = mysqli_fetch_assoc($sql)) {
         $i++;
         extract($list);
@@ -29,7 +29,7 @@
         }        
 /* Converting Project Sites id and SKU id to actual name */
         $sqlB = "SELECT p.address,p.city,p.state,p.zipcode,s.name FROM projectsites AS p, sku AS s WHERE p.id='$project_id' AND s.id='$sku_id'";
-        $sqlB = mysqli_query($connection, $sqlB);
+        $sqlB = mysqli_query($connection ,$sqlB);
         list($address,$city,$state,$zipcode,$sku_name) = mysqli_fetch_row($sqlB);
 
 /* Changing the date to regular format */

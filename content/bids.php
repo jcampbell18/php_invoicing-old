@@ -11,9 +11,9 @@
                                                         <td style="background: inherit; color: inherit; width: 940px; vertical-align: top; font-size: 11px; font-family: Tahoma, Arial, sans-serif; text-align: left; padding: 0px 0px 0px 0px;">
 <?
     $sql = "SELECT * FROM bids WHERE denied=0 ORDER BY id";
-    $sql = mysqli_query($connection, $sql);
+    $sql = mysqli_query($connection ,$sql);
 /* Counting Number of Rows, adding divider between each row until the end */ 
-    $num_rows = mysqli_num_rows($sql);      
+    $num_rows = mysqli_num_rows($sql);
     $i = 0;
     while($list = mysqli_fetch_assoc($sql)) {
         extract($list);
@@ -33,7 +33,7 @@
         $bid_date = $mdy[1].'-'.$mdy[2].'-'.$mdy[0];
 /* Converting Project Sites id and SKU id to actual name */
         $sqlB = "SELECT p.address,p.city,p.state,p.zipcode,s.name FROM projectsites AS p, sku AS s WHERE p.id='$project_id' AND s.id='$sku_id'";
-        $sqlB = mysqli_query($connection, $sqlB);
+        $sqlB = mysqli_query($connection ,$sqlB);
         list($address,$city,$state,$zipcode,$sku_name) = mysqli_fetch_row($sqlB);
 /* converting binary to either checked or unchecked box */
         if ($approve == 1) {

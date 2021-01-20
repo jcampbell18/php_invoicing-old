@@ -12,7 +12,7 @@
 <?
     if ($_GET['action'] == "view") {
         $sql = "SELECT * FROM expense WHERE invoice_id='{$_GET['invoice_id']}' ORDER BY pdate";
-        $sql = mysqli_query($connection, $sql);  
+        $sql = mysqli_query($connection ,$sql);
         while($list = mysqli_fetch_assoc($sql)) {
             extract($list);
 /* Converting Invoice_ID to Invoice # */
@@ -30,7 +30,7 @@
             $pdate = $pdate[1].'-'.$pdate[2].'-'.$pdate[0];
 /* Converting Vendor id and Expense Category id to actual name */
             $sqlB = "SELECT v.shortname,e.name FROM vendor AS v, expense_category AS e WHERE v.id='$vendor_id' AND e.id='$expense_category_id'";
-            $sqlB = mysqli_query($connection, $sqlB);
+            $sqlB = mysqli_query($connection ,$sqlB);
             list($vendor_shortname,$expense_category_name) = mysqli_fetch_row($sqlB);
 ?>            
                                                             <div style="margin: 0px; padding: 3px 25px 0px 25px; border: 0px; text-align: left; vertical-align: top;">
@@ -55,7 +55,7 @@
         }
     }
         $sql_A = "SELECT SUM(subtotal),SUM(tax),SUM(total) FROM expense WHERE invoice_id='{$_GET['invoice_id']}'";
-	    $sql_A = mysqli_query($connection, $sql_A);
+	    $sql_A = mysqli_query($connection ,$sql_A);
         list($subtotal,$tax,$total) = mysqli_fetch_row($sql_A);
 ?>
                                                             <div style="margin: 0px; padding: 3px 25px 0px 25px; border: 0px; text-align: left; vertical-align: top;">

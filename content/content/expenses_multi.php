@@ -1,6 +1,6 @@
 <?
 // create invoice
-    if ($_POST['submit'] == "create") {
+    if (isset($_POST['submit']) && $_POST['submit'] == "create") {
 
 /* Converting Date */
         $pdate = explode("-", $_POST['pdate']);
@@ -22,13 +22,13 @@
         $name = preg_replace($quotes,$replacements,$_POST['name']);
 
         $sql = "INSERT INTO expense SET invoice_id='{$_POST['invoice_id']}',vendor_id='{$_POST['vendor_id']}',expense_category_id='{$_POST['expense_category_id']}',vehicles_id='{$_POST['vehicles_id']}', pdate='$pdate', name='$name', qty='{$_POST['qty']}', amount='{$_POST['amount']}', ytax='$ytax', subtotal='$subtotal', tax='$tax', total='$total', receipt_reference='{$_POST['receipt_reference']}', image='{$_POST['image']}'";
-		mysqli_query($connection, $sql);
+		mysqli_query($connection ,$sql);
 
         $status = 'Record created successfully';
         
     }
 // update invoice
-    if ($_POST['submit'] == "update") {
+    if (isset($_POST['submit']) && $_POST['submit'] == "update") {
 
 /* Converting Date */
         $pdate = explode("-", $_POST['pdate']);
@@ -48,7 +48,7 @@
         $name = preg_replace($quotes,$replacements,$_POST['name']);
 
         $sql = "UPDATE expense SET invoice_id='{$_POST['invoice_id']}',vendor_id='{$_POST['vendor_id']}',expense_category_id='{$_POST['expense_category_id']}',vehicles_id='{$_POST['vehicles_id']}', pdate='$pdate', name='$name', qty='{$_POST['qty']}', amount='{$_POST['amount']}', subtotal='$subtotal', ytax='$ytax', tax='$tax', total='$total', receipt_reference='{$_POST['receipt_reference']}', image='{$_POST['image']}' WHERE id='{$_GET['id']}'";        
-        mysqli_query($connection, $sql);
+        mysqli_query($connection ,$sql);
         
         $status = 'Record updated successfully';
 	}
@@ -56,7 +56,7 @@
 // update invoice
     if ($_GET['action'] != 'create') {                     
         $sql = "SELECT * FROM expense WHERE id='{$_GET['id']}'";
-    	$sql = mysqli_query($connection, $sql);
+    	$sql = mysqli_query($connection ,$sql);
     	extract(mysqli_fetch_assoc($sql));
 /* Converting Date */
         $pdate = explode("-", $pdate);
@@ -84,13 +84,13 @@
                                             <tr>
                                                 <td style="background: inherit; color: #7e7878; width: 705px; vertical-align: top; font-size: 11px; font-family: Tahoma, Arial, sans-serif; text-align: left;">
                                                     <table style="width: 705px; margin: 0px; padding: 0px 0px 0px 0px; border: 0px; border-collapse: collapse;">
-<? if ($status) { ?>
-                                                        <tr>
-                                                            <td colspan="4" style="background: inherit; color: #FA1706; font-weight: bold; width: 705px; height: 50px; vertical-align: middle; font-size: 11px; font-family: Tahoma, Arial, sans-serif; text-align: right; padding: 0px 0px 0px 0px;">
-                                                                <div style="width: 705px; padding: 0px 0px 0px 0px; text-align: center;"><?= $status; ?></div>
-                                                            </td>
-                                                        </tr>
-<? } ?>
+<?// if ($status) { ?>
+<!--                                                        <tr>-->
+<!--                                                            <td colspan="4" style="background: inherit; color: #FA1706; font-weight: bold; width: 705px; height: 50px; vertical-align: middle; font-size: 11px; font-family: Tahoma, Arial, sans-serif; text-align: right; padding: 0px 0px 0px 0px;">-->
+<!--                                                                <div style="width: 705px; padding: 0px 0px 0px 0px; text-align: center;">--><?//= $status; ?><!--</div>-->
+<!--                                                            </td>-->
+<!--                                                        </tr>-->
+<?// } ?>
                                                         <tr>
                                                             <td style="background: url('imgs/main_column.jpg') no-repeat; color: inherit; width: 235px; height: 36px; vertical-align: middle; font-size: 11px; font-family: Tahoma, Arial, sans-serif; text-align: right; padding: 0px 0px 0px 0px;">
                                                                 <div style="padding-right: 10px;">Invoice</div>
@@ -101,7 +101,7 @@
     								                                    <option value="0">N/A</option>
 <?
 	$sql_a = "SELECT i.id, p.address, p.city, p.state, p.zipcode, s.name FROM invoice i, projectsites p, sku s WHERE i.project_id=p.id AND s.id=i.sku_id ORDER BY i.id,p.address";
-	$sql_a = mysqli_query($connection, $sql_a);
+	$sql_a = mysqli_query($connection ,$sql_a);
 	while(list($inv_id, $inv_address, $inv_city, $inv_state, $inv_zipcode, $inv_sku) = mysqli_fetch_row($sql_a)) {
         $inv_projectsite = $inv_address.', '.$inv_city.', '.$inv_state.' '.$inv_zipcode;	   
 /* Converting Invoice ID to Invoice # */
@@ -115,7 +115,7 @@
         	$inv_idA = 'INV_000'.$inv_id;
         }
 ?>
-								                                        <option value="<?= $inv_id ?>" <? if($inv_id == $invoice_id) echo("selected"); ?>><?= $inv_idA.' - '.$inv_projectsite.' ('.$inv_sku.')' ?></option>
+								                                        <option value="<?= $inv_id ?>" <? if(isset($invoice_id) && $inv_id == $invoice_id) echo("selected"); ?>><?= $inv_idA.' - '.$inv_projectsite.' ('.$inv_sku.')' ?></option>
 <?
 	}
 ?>
@@ -133,11 +133,11 @@
     								                                    <option value="0">N/A</option>
 <?
 	$sql_z = "SELECT id,man_year,make,model,submodel FROM vehicles ORDER BY id";
-	$sql_z = mysqli_query($connection, $sql_z);
+	$sql_z = mysqli_query($connection ,$sql_z);
 	while(list($v_id,$man_year,$make,$model,$submodel) = mysqli_fetch_row($sql_z)) {
         $vehicle = $man_year.' - '.$make.' '.$model.' '.$submodel;	   
 ?>
-								                                        <option value="<?= $v_id ?>" <? if($v_id == $vehicles_id) echo("selected"); ?>><?= $vehicle ?></option>
+								                                        <option value="<?= $v_id ?>" <? if(isset($vehicles_id) && $v_id == $vehicles_id) echo("selected"); ?>><?= $vehicle ?></option>
 <?
 	}
 ?>
@@ -155,10 +155,10 @@
     								                                    <option value="">&nbsp;</option>
 <?
 	$sql_b = "SELECT id,shortname FROM vendor";
-	$sql_b = mysqli_query($connection, $sql_b);
+	$sql_b = mysqli_query($connection ,$sql_b);
 	while(list($vid,$vname) = mysqli_fetch_row($sql_b)) {
 ?>
-								                                        <option value="<?= $vid ?>" <? if($vendor_id == $vid) echo("selected"); ?>><?= $vname ?></option>
+								                                        <option value="<?= $vid ?>" <? if(isset($vendor_id) && $vendor_id == $vid) echo("selected"); ?>><?= $vname ?></option>
 <?
 	}
 ?>
@@ -172,7 +172,7 @@
                                                             </td>
                                                             <td colspan="3" style="background: url('imgs/input_column.jpg') no-repeat; width: 705px; height: 36th; vertical-align: middle; color: #000000; padding: 0px 0px 0px 0px; font-size: 11px; font-family: Tahoma, Arial, sans-serif; text-align: left;">
                                                                 <div style="padding-left: 15px;">
-                                                                    <input type="text" name="pdate" value="<?= $pdate ?>" style="width: 70px; height: 14px; background: inherit; color: #000000; font-size: 11px; font-family: Tahoma, Arial, sans-serif; border: 0px;">
+                                                                    <input type="text" name="pdate" value="<?= isset($pdate) ? $pdate : "" ?>" style="width: 70px; height: 14px; background: inherit; color: #000000; font-size: 11px; font-family: Tahoma, Arial, sans-serif; border: 0px;">
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -182,7 +182,7 @@
                                                             </td>
                                                             <td colspan="3" style="background: url('imgs/input_column.jpg') no-repeat; width: 705px; height: 36th; vertical-align: middle; color: #000000; padding: 0px 0px 0px 0px; font-size: 11px; font-family: Tahoma, Arial, sans-serif; text-align: left;">
                                                                 <div style="padding-left: 15px;">
-                                                                    <input type="text" name="receipt_reference" value="<?= $receipt_reference ?>" style="width: 350px; height: 14px; background: inherit; color: #000000; font-size: 11px; font-family: Tahoma, Arial, sans-serif; border: 0px;">
+                                                                    <input type="text" name="receipt_reference" value="<?= isset($receipt_reference) ? $receipt_reference : "" ?>" style="width: 350px; height: 14px; background: inherit; color: #000000; font-size: 11px; font-family: Tahoma, Arial, sans-serif; border: 0px;">
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -196,7 +196,7 @@
     								                                    <option value="0">N/A</option>
 <?
     $sqlZ = "SELECT i.id, p.address FROM projectsites AS p, invoice AS i WHERE i.project_id=p.id ORDER BY i.id";
-    $sqlZ = mysqli_query($connection, $sqlZ);
+    $sqlZ = mysqli_query($connection ,$sqlZ);
 	while(list($inv_num,$address) = mysqli_fetch_row($sqlZ)) {
         if ($inv_num >= 10) {
               if ($inv_num <= 99) {
@@ -213,7 +213,7 @@
         while (false !== ($image_ = readdir($handle))) {
             if ($image_ != "." && $image_ != "..") {	   
 ?>
-								                                        <option value="<?= $image_ ?>" <? if($image == $image_) echo("selected"); ?>><?= $image_." (".$address." - ".$inv_number.")" ?></option>
+								                                        <option value="<?= $image_ ?>" <? if(isset($image) && $image == $image_) echo("selected"); ?>><?= $image_." (".$address." - ".$inv_number.")" ?></option>
 <?
             }
         }
@@ -237,7 +237,7 @@
     								                                    <option value="">&nbsp;</option>
 <?
 	$sql_c = "SELECT id,name,shortdesc FROM expense_category";
-	$sql_c = mysqli_query($connection, $sql_c);
+	$sql_c = mysqli_query($connection ,$sql_c);
 	while(list($eid,$ename,$eshortdesc) = mysqli_fetch_row($sql_c)) {
 ?>
 								                                        <option value="<?= $eid ?>" <? if($expense_category_id == $eid) echo("selected"); ?>><?= $ename." (".$eshortdesc.")" ?></option>
@@ -318,7 +318,7 @@
     								                                    <option value="">&nbsp;</option>
 <?
 	$sql_c = "SELECT id,name,shortdesc FROM expense_category";
-	$sql_c = mysqli_query($connection, $sql_c);
+	$sql_c = mysqli_query($connection ,$sql_c);
 	while(list($eid,$ename,$eshortdesc) = mysqli_fetch_row($sql_c)) {
 ?>
 								                                        <option value="<?= $eid ?>" <? if($expense_category_id == $eid) echo("selected"); ?>><?= $ename." (".$eshortdesc.")" ?></option>
@@ -399,7 +399,7 @@
     								                                    <option value="">&nbsp;</option>
 <?
 	$sql_c = "SELECT id,name,shortdesc FROM expense_category";
-	$sql_c = mysqli_query($connection, $sql_c);
+	$sql_c = mysqli_query($connection ,$sql_c);
 	while(list($eid,$ename,$eshortdesc) = mysqli_fetch_row($sql_c)) {
 ?>
 								                                        <option value="<?= $eid ?>" <? if($expense_category_id == $eid) echo("selected"); ?>><?= $ename." (".$eshortdesc.")" ?></option>
@@ -480,7 +480,7 @@
     								                                    <option value="">&nbsp;</option>
 <?
 	$sql_c = "SELECT id,name,shortdesc FROM expense_category";
-	$sql_c = mysqli_query($connection, $sql_c);
+	$sql_c = mysqli_query($connection ,$sql_c);
 	while(list($eid,$ename,$eshortdesc) = mysqli_fetch_row($sql_c)) {
 ?>
 								                                        <option value="<?= $eid ?>" <? if($expense_category_id == $eid) echo("selected"); ?>><?= $ename." (".$eshortdesc.")" ?></option>
@@ -561,7 +561,7 @@
     								                                    <option value="">&nbsp;</option>
 <?
 	$sql_c = "SELECT id,name,shortdesc FROM expense_category";
-	$sql_c = mysqli_query($connection, $sql_c);
+	$sql_c = mysqli_query($connection ,$sql_c);
 	while(list($eid,$ename,$eshortdesc) = mysqli_fetch_row($sql_c)) {
 ?>
 								                                        <option value="<?= $eid ?>" <? if($expense_category_id == $eid) echo("selected"); ?>><?= $ename." (".$eshortdesc.")" ?></option>
@@ -642,7 +642,7 @@
     								                                    <option value="">&nbsp;</option>
 <?
 	$sql_c = "SELECT id,name,shortdesc FROM expense_category";
-	$sql_c = mysqli_query($connection, $sql_c);
+	$sql_c = mysqli_query($connection ,$sql_c);
 	while(list($eid,$ename,$eshortdesc) = mysqli_fetch_row($sql_c)) {
 ?>
 								                                        <option value="<?= $eid ?>" <? if($expense_category_id == $eid) echo("selected"); ?>><?= $ename." (".$eshortdesc.")" ?></option>
@@ -723,7 +723,7 @@
     								                                    <option value="">&nbsp;</option>
 <?
 	$sql_c = "SELECT id,name,shortdesc FROM expense_category";
-	$sql_c = mysqli_query($connection, $sql_c);
+	$sql_c = mysqli_query($connection ,$sql_c);
 	while(list($eid,$ename,$eshortdesc) = mysqli_fetch_row($sql_c)) {
 ?>
 								                                        <option value="<?= $eid ?>" <? if($expense_category_id == $eid) echo("selected"); ?>><?= $ename." (".$eshortdesc.")" ?></option>
@@ -804,7 +804,7 @@
     								                                    <option value="">&nbsp;</option>
 <?
 	$sql_c = "SELECT id,name,shortdesc FROM expense_category";
-	$sql_c = mysqli_query($connection, $sql_c);
+	$sql_c = mysqli_query($connection ,$sql_c);
 	while(list($eid,$ename,$eshortdesc) = mysqli_fetch_row($sql_c)) {
 ?>
 								                                        <option value="<?= $eid ?>" <? if($expense_category_id == $eid) echo("selected"); ?>><?= $ename." (".$eshortdesc.")" ?></option>

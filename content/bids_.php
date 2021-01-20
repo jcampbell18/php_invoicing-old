@@ -2,10 +2,10 @@
     include("fckeditor/fckeditor.php");
 
 // approving bid and creating invoice    
-    if ($_GET['bid'] == "approve") {
+    if (isset($_GET['bid']) && $_GET['bid'] == "approve") {
         
         $sql = "SELECT client_id,sku_id,project_id,description,amount FROM bids WHERE id='{$_GET['id']}'";
-        $sql = mysqli_query($connection, $sql);
+        $sql = mysqli_query($connection ,$sql);
         list($client_id,$sku_id,$project_id,$description,$amount) = mysqli_fetch_row($sql);
             $quotes = array('/"/',"/'/");
             $replacements = array('&quot;','&apos;');
@@ -13,12 +13,12 @@
             $date_start = date("Y/m/d");
        
         $sqlA = "INSERT INTO invoice SET client_id='$client_id',sku_id='$sku_id',project_id='$project_id',bid_id='{$_GET['id']}', date_start='$date_start', description='$new_description', amount='$amount', complete='0', paid='0'";
-		mysqli_query($connection, $sqlA);     
+		mysqli_query($connection ,$sqlA);
         $sqlB = "UPDATE bids SET approve='1' WHERE id='{$_GET['id']}'";
-        mysqli_query($connection, $sqlB);
+        mysqli_query($connection ,$sqlB);
 /* Create folder for the invoice */      
         $sqlC = "SELECT p.address, i.id FROM projectsites p, invoice i WHERE p.id='$project_id' AND i.bid_id='{$_GET['id']}'"; 
-        $sqlC = mysqli_query($connection, $sqlC);
+        $sqlC = mysqli_query($connection ,$sqlC);
         list($p_address,$i_id) = mysqli_fetch_row($sqlC);
         
             if ($i_id >= 10) {
@@ -43,32 +43,31 @@
 	}
 
 // create invoice
-    if ($_POST['submit'] == "create") {
+    if (isset($_POST['submit']) && $_POST['submit'] == "create") {
 
 /* Converting Date */
         $bid_date = explode("-", $_POST['bid_date']);
         $bid_date = $bid_date[2].'-'.$bid_date[0].'-'.$bid_date[1];
-
         $sql = "INSERT INTO bids SET client_id='{$_POST['client_id']}',sku_id='{$_POST['sku_id']}',project_id='{$_POST['project_id']}', bid_date='$bid_date', description='{$_POST['description']}', amount='{$_POST['amount']}', approve='{$_POST['approve']}', denied='{$_POST['denied']}'";
-		mysqli_query($connection, $sql);
+		mysqli_query($connection ,$sql);
         
         $status = 'Record created successfully';
         
 //		header("Location: main.php?page=bids");
     }
 // update bid
-    if ($_POST['submit'] == "update") {
+    if (isset($_POST['submit']) && $_POST['submit'] == "update") {
 
 /* Converting Date */
         $bid_date = explode("-", $_POST['bid_date']);
         $bid_date = $bid_date[2].'-'.$bid_date[0].'-'.$bid_date[1];
 
         $sql = "UPDATE bids SET client_id='{$_POST['client_id']}',sku_id='{$_POST['sku_id']}',project_id='{$_POST['project_id']}', bid_date='$bid_date', description='{$_POST['description']}', amount='{$_POST['amount']}', approve='{$_POST['approve']}', denied='{$_POST['denied']}' WHERE id='{$_GET['id']}'";        
-        mysqli_query($connection, $sql);
+        mysqli_query($connection ,$sql);
         
         if ($_POST['approve'] == "1") {
             $sqlA = "INSERT INTO invoices SET client_id='{$_POST['client_id']}',sku_id='{$_POST['sku_id']}',project_id='{$_POST['project_id']}', bid_id='{$_GET['id']}', description='$description', amount='$amount', complete='0', paid='0'";
-		  mysqli_query($connection, $sqlA);
+		  mysqli_query($connection ,$sqlA);
         }
         
         $status = 'Record updated successfully';
@@ -79,14 +78,15 @@
 // remove invoice
     if ($_GET['action'] == "delete") {
 		$sql = "DELETE FROM bids WHERE id='{$_GET['id']}'";
-		mysqli_query($connection, $sql);
+		mysqli_query($connection ,$sql);
 		header("Location: main.php?page=bids");
 	}
 */
 // update invoice
-    if ($_GET['action'] != 'create') {                     
+    $inv = NULL;
+    if (isset($_GET['action']) && $_GET['action'] != 'create') {
         $sql = "SELECT * FROM bids WHERE id='{$_GET['id']}'";
-    	$sql = mysqli_query($connection, $sql);
+    	$sql = mysqli_query($connection ,$sql);
     	extract(mysqli_fetch_assoc($sql));
 /* Converting Date */
         $bid_date = explode("-", $bid_date);
@@ -111,13 +111,13 @@
                                             <tr>
                                                 <td style="background: inherit; color: #7e7878; width: 940px; vertical-align: top; font-size: 11px; font-family: Tahoma, Arial, sans-serif; text-align: left;">
                                                     <table style="width: 940px; margin: 0px; padding: 0px 0px 0px 0px; border: 0px; border-collapse: collapse;">
-<? if ($status) { ?>
-                                                        <tr>
-                                                            <td colspan="4" style="background: inherit; color: #FA1706; font-weight: bold; width: 940px; height: 50px; vertical-align: middle; font-size: 11px; font-family: Tahoma, Arial, sans-serif; text-align: right; padding: 0px 0px 0px 0px;">
-                                                                <div style="width: 940px; padding: 0px 0px 0px 0px; text-align: center;"><?= $status; ?></div>
-                                                            </td>
-                                                        </tr>
-<? } ?>
+<?// if ($status) { ?>
+<!--                                                        <tr>-->
+<!--                                                            <td colspan="4" style="background: inherit; color: #FA1706; font-weight: bold; width: 940px; height: 50px; vertical-align: middle; font-size: 11px; font-family: Tahoma, Arial, sans-serif; text-align: right; padding: 0px 0px 0px 0px;">-->
+<!--                                                                <div style="width: 940px; padding: 0px 0px 0px 0px; text-align: center;">--><?//= $status; ?><!--</div>-->
+<!--                                                            </td>-->
+<!--                                                        </tr>-->
+<?// } ?>
                                                         <tr>
                                                             <td style="background: url('imgs/main_column.jpg') no-repeat; color: inherit; width: 235px; height: 36px; vertical-align: middle; font-size: 11px; font-family: Tahoma, Arial, sans-serif; text-align: right; padding: 0px 0px 0px 0px;">
                                                                 <div style="padding-right: 10px;">Bid #</div>
@@ -143,10 +143,10 @@
     								                                    <option value="">&nbsp;</option>
 <?
 	$sql_a = "SELECT id,business_name FROM clients";
-	$sql_a = mysqli_query($connection, $sql_a);
+	$sql_a = mysqli_query($connection ,$sql_a);
 	while(list($cid,$cname) = mysqli_fetch_row($sql_a)) {
 ?>
-								                                        <option value="<?= $cid ?>" <? if($client_id == $cid) echo("selected"); ?>><?= $cname ?></option>
+								                                        <option value="<?= $cid ?>" <? if(isset($client_id) && $client_id == $cid) echo("selected"); ?>><?= $cname ?></option>
 <?
 	}
 ?>
@@ -164,10 +164,10 @@
     								                                    <option value="">&nbsp;</option>
 <?
 	$sql_b = "SELECT id,name FROM sku";
-	$sql_b = mysqli_query($connection, $sql_b);
+	$sql_b = mysqli_query($connection ,$sql_b);
 	while(list($sid,$sname) = mysqli_fetch_row($sql_b)) {
 ?>
-								                                        <option value="<?= $sid ?>" <? if($sku_id == $sid) echo("selected"); ?>><?= $sname ?></option>
+								                                        <option value="<?= $sid ?>" <? if(isset($sku_id) && $sku_id == $sid) echo("selected"); ?>><?= $sname ?></option>
 <?
 	}
 ?>
@@ -185,10 +185,10 @@
     								                                    <option value="">&nbsp;</option>
 <?
 	$sql_c = "SELECT id,address,city,state,zipcode FROM projectsites";
-	$sql_c = mysqli_query($connection, $sql_c);
+	$sql_c = mysqli_query($connection ,$sql_c);
 	while(list($pid,$paddress,$pcity,$pstate,$pzipcode) = mysqli_fetch_row($sql_c)) {
 ?>
-								                                        <option value="<?= $pid ?>" <? if($project_id == $pid) echo("selected"); ?>><?= $paddress.', '.$pcity.', '.$pstate.' '.$pzipcode ?></option>
+								                                        <option value="<?= $pid ?>" <? if(isset($project_id) && $project_id == $pid) echo("selected"); ?>><?= $paddress.', '.$pcity.', '.$pstate.' '.$pzipcode ?></option>
 <?
 	}
 ?>
@@ -202,7 +202,7 @@
                                                             </td>
                                                             <td style="background: url('imgs/input_column.jpg') no-repeat; width: 594px; height: 36th; vertical-align: middle; color: #000000; padding: 0px 0px 0px 0px; font-size: 11px; font-family: Tahoma, Arial, sans-serif; text-align: left;">
                                                                 <div style="padding-left: 15px;">
-                                                                    <input type="text" name="bid_date" value="<?= $bid_date ?>" style="width: 70px; height: 14px; background: inherit; color: #000000; font-size: 11px; font-family: Tahoma, Arial, sans-serif; border: 0px;">
+                                                                    <input type="text" name="bid_date" value="<?= isset($bid_date) ? $bid_date : "" ?>" style="width: 70px; height: 14px; background: inherit; color: #000000; font-size: 11px; font-family: Tahoma, Arial, sans-serif; border: 0px;">
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -218,7 +218,7 @@
 	$oFCKeditor->ToolbarSet = "Basic" ;
 	$oFCKeditor->Width = 585 ;
 	$oFCKeditor->Height = 135 ;
-	$oFCKeditor->Value = $description ;
+	$oFCKeditor->Value = isset($description) ? $description : "";
 	$oFCKeditor->Create() ;
 ?>
                                                                 </div>
@@ -230,7 +230,7 @@
                                                             </td>
                                                             <td style="background: url('imgs/input_column.jpg') no-repeat; width: 594px; height: 36th; vertical-align: middle; color: #000000; padding: 0px 0px 0px 0px; font-size: 11px; font-family: Tahoma, Arial, sans-serif; text-align: left;">
                                                                 <div style="padding-left: 15px;">
-                                                                    $<input type="text" name="amount" value="<?= $amount ?>" style="width: 100px; height: 14px; background: inherit; color: #000000; font-size: 11px; font-family: Tahoma, Arial, sans-serif; border: 0px;">
+                                                                    $<input type="text" name="amount" value="<?= isset($amount) ? $amount : 0.00 ?>" style="width: 100px; height: 14px; background: inherit; color: #000000; font-size: 11px; font-family: Tahoma, Arial, sans-serif; border: 0px;">
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -240,7 +240,7 @@
                                                             </td>
                                                             <td style="background: url('imgs/input_column.jpg') no-repeat; width: 594px; height: 36th; vertical-align: middle; color: #000000; padding: 0px 0px 0px 0px; font-size: 11px; font-family: Tahoma, Arial, sans-serif; text-align: left;">
                                                                 <div style="padding-left: 15px;">
-                                                                    <input type="text" name="approve" value="<? if ($approve != 0) { echo("Yes"); } else { echo("No"); } ?>" style="width: 100px; height: 14px; background: inherit; color: #000000; font-size: 11px; font-family: Tahoma, Arial, sans-serif; border: 0px;">
+                                                                    <input type="text" name="approve" value="<? if (isset($approve) && $approve != 0) { echo("Yes"); } else { echo("No"); } ?>" style="width: 100px; height: 14px; background: inherit; color: #000000; font-size: 11px; font-family: Tahoma, Arial, sans-serif; border: 0px;">
                                                                 </div>
                                                             <? /* <div style="padding-left: 10px;">
                                                                     <select name="approve" style="background: inherit; color: inherit; border: 0px; font-size: 11px; font-family: Tahoma, Arial, sans-serif;">
@@ -257,8 +257,8 @@
                                                             <td style="background: url('imgs/input_column.jpg') no-repeat; width: 594px; height: 36th; vertical-align: middle; color: #000000; padding: 0px 0px 0px 0px; font-size: 11px; font-family: Tahoma, Arial, sans-serif; text-align: left;">
                                                                 <div style="padding-left: 10px;">
                                                                     <select name="denied" style="background: inherit; color: inherit; border: 0px; font-size: 11px; font-family: Tahoma, Arial, sans-serif;">
-                                                                        <option value="0" <? if($denied == '0') echo("selected"); ?>>No</option>
-                                                                        <option value="1" <? if($denied == '1') echo("selected"); ?>>Yes</option>
+                                                                        <option value="0" <? if(isset($denied) && $denied == '0') echo("selected"); ?>>No</option>
+                                                                        <option value="1" <? if(isset($denied) && $denied == '1') echo("selected"); ?>>Yes</option>
                                                                     </select>
                                                                 </div>
                                                             </td>

@@ -5,7 +5,8 @@
                         <tr>
                         
 <?
-    $page = $_GET['page'] ? $_GET['page'] : 'dashboard';
+    $page = isset($_GET['page']) ? $_GET['page'] : "dashboard";
+
     $contents_ = array(
         "main", 
         "dashboard", 

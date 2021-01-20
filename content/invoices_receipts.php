@@ -1,6 +1,6 @@
 <?
     $sql = "SELECT address FROM projectsites WHERE id='{$_GET['pid']}'";
-    $sql = mysqli_query($connection, $sql);
+    $sql = mysqli_query($connection ,$sql);
     list($address) = mysqli_fetch_row($sql);
 ?>
 

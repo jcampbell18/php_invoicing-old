@@ -10,11 +10,11 @@
                                                     <tr>
                                                         <td style="background: inherit; color: inherit; width: 940px; vertical-align: top; font-size: 11px; font-family: Tahoma, Arial, sans-serif; text-align: left; padding: 0px 0px 0px 0px;">
 <?
-    if ($_GET['action'] != "group" || ($_GET['action'] == null)) {
+    if (isset($_GET['action']) && $_GET['action'] != "group") {
         $sql = "SELECT * FROM expense ORDER BY pdate";
-        $sql = mysqli_query($connection, $sql);  
+        $sql = mysqli_query($connection ,$sql);
 /* Counting Number of Rows, adding divider between each row until the end */ 
-        $num_rows = mysqli_num_rows($sql);      
+        $num_rows = mysqli_num_rows($sql);
         $i = 0;
         while($list = mysqli_fetch_assoc($sql)) {
             extract($list);
@@ -32,12 +32,12 @@
                 }
            } else {
                 $sqlC = "SELECT man_year,make,model,submodel FROM vehicles WHERE id='$vehicles_id'";
-                $sqlC = mysqli_query($connection, $sqlC);
+                $sqlC = mysqli_query($connection ,$sqlC);
                 list($man_year,$make,$model,$submodel) = mysqli_fetch_row($sqlC);
            }
 /* Converting Vendor id and Expense Category id to actual name */
             $sqlB = "SELECT v.shortname,e.name FROM vendor AS v, expense_category AS e WHERE v.id='$vendor_id' AND e.id='$expense_category_id'";
-            $sqlB = mysqli_query($connection, $sqlB);
+            $sqlB = mysqli_query($connection ,$sqlB);
             list($vendor_shortname,$expense_category_name) = mysqli_fetch_row($sqlB);
 /* Changing the date to regular format */
             $pdate = explode("-",$pdate);
@@ -69,9 +69,9 @@
         }
     } else {
         $sql = "SELECT e.pdate, v.shortname, SUM(subtotal), SUM(tax), SUM(total), e.receipt_reference, e.image FROM expense AS e, vendor AS v WHERE e.vendor_id=v.id GROUP BY e.receipt_reference ORDER BY e.pdate";
-        $sql = mysqli_query($connection, $sql);
+        $sql = mysqli_query($connection ,$sql);
         
-        $num_rows = mysqli_num_rows($sql);      
+        $num_rows = mysqli_num_rows($sql);
         $i = 0;
         while(list($pdate,$shortname,$subtotal,$tax,$total,$receipt_reference,$image) = mysqli_fetch_row($sql)) {
 //        while($list = mysqli_fetch_assoc($sql)) {
@@ -90,7 +90,7 @@
                                                                         <td style="width: 44px; height: 37px; padding: 0px;">
 <?
             $sqlY = "SELECT p.address, i.id FROM projectsites AS p, invoice AS i, expense AS e WHERE p.id=i.project_id AND e.image='$image' AND e.invoice_id=i.id";
-            $sqlY = mysqli_query($connection, $sqlY);
+            $sqlY = mysqli_query($connection ,$sqlY);
             list($address,$invoice) = mysqli_fetch_row($sqlY);
             if ($invoice >= 10) {
         		      if ($invoice <= 99) {
